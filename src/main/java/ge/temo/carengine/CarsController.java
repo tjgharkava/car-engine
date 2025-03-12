@@ -2,9 +2,11 @@ package ge.temo.carengine;
 
 import ge.temo.carengine.cars.model.CarDTO;
 import ge.temo.carengine.cars.model.CarRequest;
+import ge.temo.carengine.cars.persistance.Car;
 import ge.temo.carengine.cars.user.persistance.AppUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -49,18 +51,13 @@ public class CarsController {
         carsService.updateCar(id, request);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("{id}/price")
-    public ResponseEntity<String> updateCarPriceInCents(@PathVariable("id") Long carId,
-                                                        @RequestParam int priceInCents) {
-        try {
-            carsService.updateCarPriceInCents(carId, priceInCents);
-            return ResponseEntity.ok("Car price updated successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error updating car price." + e.getMessage());
-        }
+    @PutMapping("/{carId}/image")
+    public ResponseEntity<CarDTO> setCarImage(@PathVariable Long carId, @RequestParam String imageUrl)
+    {
+        CarDTO car = carsService.updateCarImage(carId, imageUrl);
+        return ResponseEntity.ok(car);
     }
+
 
     @DeleteMapping("{id}")
     void deleteCar(@PathVariable Long id) {

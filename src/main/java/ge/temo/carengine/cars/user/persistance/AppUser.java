@@ -38,8 +38,6 @@ public class AppUser {
     @JoinTable(
             name = "user_car",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "car_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "car_id"))
     private Set<Car> ownedCars = new HashSet<>();
-
 }

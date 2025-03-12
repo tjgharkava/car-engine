@@ -29,10 +29,9 @@ public class Car {
     @Column(name = "price_in_cents")
     private int priceInCents;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "engine_id")
     private Engine engine;
-
-    @ManyToMany(mappedBy = "ownedCars")
-    private Set<Car> owners = new HashSet<>();
 }

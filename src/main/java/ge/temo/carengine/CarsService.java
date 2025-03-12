@@ -6,6 +6,7 @@ import ge.temo.carengine.cars.model.CarRequest;
 import ge.temo.carengine.cars.model.EngineDTO;
 import ge.temo.carengine.cars.persistance.Car;
 import ge.temo.carengine.cars.persistance.CarRepository;
+import ge.temo.carengine.cars.user.persistance.AppUser;
 import ge.temo.carengine.cars.user.persistance.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,13 +51,21 @@ public class CarsService {
         carRepository.deleteById(id);
     }
 
-    public void updateCarPriceInCents(Long carId, int priceInCents) {
-        Car car = carRepository.findById(carId).orElseThrow(() -> new RuntimeException("Car not found"));
-        car.setPriceInCents(priceInCents);
-        carRepository.save(car);
+    public Car setCarImage(Long carId, String imageUrl) {
+        Car car = carRepository.findById(carId).orElseThrow(() -> buildNotFoundException(carId));
+        if (car != null) {
+            car.setImageUrl(imageUrl);
+            return carRepository.save(car);
+        }
+        return null;
     }
 
-
+    public CarDTO updateCarImage(Long CarId, String imageUrl) {
+        Car car = carRepository.findById(CarId).orElseThrow(() -> buildNotFoundException(CarId));
+        car.setImageUrl(imageUrl);
+        carRepository.save(car);
+        return mapCar(car);
+    }
 
     public CarDTO mapCar(Car car) {
         return new CarDTO(car.getId(), car.getModel(), car.getYear(), car.isDriveable(),

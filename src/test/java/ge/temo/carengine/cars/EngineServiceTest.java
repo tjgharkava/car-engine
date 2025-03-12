@@ -14,15 +14,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 @ExtendWith(MockitoExtension.class)
-public class EngineServiceTest {
+class EngineServiceTest {
 
     @Mock
     private EngineRepository engineRepository;
@@ -62,12 +62,12 @@ public class EngineServiceTest {
     @Test
     void testUpdateEngine() {
         // Given
-        EngineRequest engineRequest = new EngineRequest(200, 2.0);
+        EngineRequest request = new EngineRequest(200, 2.0);
         when(engineRepository.findById(1L)).thenReturn(java.util.Optional.of(buildEngine()));
         when(engineRepository.save(any(Engine.class))).thenReturn(buildEngine());
 
         // When
-        EngineDTO result = engineService.updateEngine(1L, engineRequest);
+        EngineDTO result = engineService.updateEngine(1L, request);
 
         // Then
         assertEquals(2.0, result.getCapacity());
@@ -79,7 +79,7 @@ public class EngineServiceTest {
     @Test
     void testDeleteEngine() {
         engineService.deleteEngine(1L);
-        verify(engineRepository).findById(1L);
+        verify(engineRepository).deleteById(1L);
     }
 
     @Test
